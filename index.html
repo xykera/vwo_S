@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VWO QA Test SPA</title>
+  <meta name="description"
+    content="A comprehensive SPA for VWO QA testing covering all element types, forms, shadow DOM, canvas, and more." />
+  <link rel="preconnect" href="https://dev.visualwebsiteoptimizer.com" />
+  <script src="vwo-loader.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav id="main-nav">
+    <div class="nav-brand">VWO QA TestBed</div>
+    <ul class="nav-links">
+      <li><a href="#home" class="nav-link active" data-page="home" onclick="return preserveQueryParams(this)">Home</a>
+      </li>
+      <li><a href="#elements" class="nav-link" data-page="elements"
+          onclick="return preserveQueryParams(this)">Elements</a></li>
+      <li><a href="#forms" class="nav-link" data-page="forms" onclick="return preserveQueryParams(this)">Forms</a></li>
+      <li><a href="#dynamic" class="nav-link" data-page="dynamic" onclick="return preserveQueryParams(this)">Dynamic</a>
+      </li>
+      <li><a href="#custom" class="nav-link" data-page="custom" onclick="return preserveQueryParams(this)">Custom
+          Elements</a></li>
+      <li><a href="#shadow" class="nav-link" data-page="shadow" onclick="return preserveQueryParams(this)">Shadow
+          DOM</a></li>
+      <li><a href="#canvas" class="nav-link" data-page="canvas" onclick="return preserveQueryParams(this)">Canvas</a>
+      </li>
+      <li><a href="#tables" class="nav-link" data-page="tables" onclick="return preserveQueryParams(this)">Tables</a>
+      </li>
+      <li><a href="#media" class="nav-link" data-page="media" onclick="return preserveQueryParams(this)">Media</a></li>
+      <li><a href="#interactions" class="nav-link" data-page="interactions"
+          onclick="return preserveQueryParams(this)">Interactions</a></li>
+    </ul>
+    <button id="nav-toggle" aria-label="Toggle navigation">☰</button>
+  </nav>
+
+  <!-- ===== PAGES ===== -->
+  <main id="app">
+
+    <!-- HOME PAGE -->
+    <section id="page-home" class="page active">
+      <h1>VWO QA Testing SPA</h1>
+      <p class="subtitle">A comprehensive testbed covering all element types used in real-world VWO client websites.</p>
+      <div class="card-grid">
+        <div class="card" onclick="navigate('elements')">
+          <span class="card-icon">🧩</span>
+          <h3>Standard Elements</h3>
+          <p>Buttons, inputs, links, lists, headings, images, iframes</p>
+        </div>
+        <div class="card" onclick="navigate('forms')">
+          <span class="card-icon">📋</span>
+          <h3>Forms</h3>
+          <p>Standard forms with all input types and validation</p>
+        </div>
+        <div class="card" onclick="navigate('dynamic')">
+          <span class="card-icon">⚡</span>
+          <h3>Dynamic Forms</h3>
+          <p>Forms that change based on user input, AJAX-loaded content</p>
+        </div>
+        <div class="card" onclick="navigate('custom')">
+          <span class="card-icon">🔧</span>
+          <h3>Custom Elements</h3>
+          <p>Web Components, non-standard form controls</p>
+        </div>
+        <div class="card" onclick="navigate('shadow')">
+          <span class="card-icon">👻</span>
+          <h3>Shadow DOM</h3>
+          <p>Elements inside open and closed shadow roots</p>
+        </div>
+        <div class="card" onclick="navigate('canvas')">
+          <span class="card-icon">🎨</span>
+          <h3>Canvas</h3>
+          <p>2D canvas drawing, animation, click tracking</p>
+        </div>
+        <div class="card" onclick="navigate('tables')">
+          <span class="card-icon">📊</span>
+          <h3>Tables &amp; Data</h3>
+          <p>Sortable tables, pagination, data grids</p>
+        </div>
+        <div class="card" onclick="navigate('media')">
+          <span class="card-icon">🎬</span>
+          <h3>Media</h3>
+          <p>Video, audio, SVG, iframes</p>
+        </div>
+        <div class="card" onclick="navigate('interactions')">
+          <span class="card-icon">🖱️</span>
+          <h3>Interactions</h3>
+          <p>Drag &amp; drop, modals, tooltips, accordions, tabs</p>
+        </div>
+      </div>
+
+      <!-- Notification / toast for VWO goal tracking demo -->
+      <div id="home-cta" style="margin-top:2rem;">
+        <button id="btn-cta-primary" class="btn btn-primary" onclick="trackGoal('cta_click')">Primary CTA
+          Button</button>
+        <button id="btn-cta-secondary" class="btn btn-secondary" onclick="trackGoal('secondary_cta')">Secondary
+          CTA</button>
+        <button id="btn-cta-danger" class="btn btn-danger">Danger Button</button>
+        <button id="btn-cta-outline" class="btn btn-outline">Outline Button</button>
+        <button id="btn-disabled" class="btn btn-primary" disabled>Disabled Button</button>
+      </div>
+
+      <div id="toast" class="toast hidden"></div>
+    </section>
+
+    <!-- ELEMENTS PAGE -->
+    <section id="page-elements" class="page">
+      <h2>Standard HTML Elements</h2>
+
+      <!-- Headings -->
+      <div class="section-block">
+        <h3>Headings</h3>
+        <h1 id="h1-demo">Heading 1</h1>
+        <h2 id="h2-demo">Heading 2</h2>
+        <h3 id="h3-demo">Heading 3</h3>
+        <h4 id="h4-demo">Heading 4</h4>
+        <h5 id="h5-demo">Heading 5</h5>
+        <h6 id="h6-demo">Heading 6</h6>
+      </div>
+
+      <!-- Text elements -->
+      <div class="section-block">
+        <h3>Text &amp; Inline Elements</h3>
+        <p id="para-1">This is a paragraph with <strong>bold text</strong>, <em>italic text</em>, <u>underlined</u>,
+          <s>strikethrough</s>, <mark>highlighted</mark>, <code>inline code</code>, <sup>superscript</sup>,
+          <sub>subscript</sub>.
+        </p>
+        <blockquote id="blockquote-1">This is a blockquote element used for quoting content.</blockquote>
+        <pre id="pre-1"><code>const vwo = window.VWO || [];
+vwo.push(['activate', 'campaign_key']);</code></pre>
+        <p><abbr title="Visual Website Optimizer" id="abbr-1">VWO</abbr> is an A/B testing platform.</p>
+        <p><a href="#" id="link-1" onclick="trackGoal('link_click'); return false;">Anchor Link 1</a> | <a
+            href="https://vwo.com" id="link-external" target="_blank" rel="noopener">External Link (VWO)</a></p>
+      </div>
+
+      <!-- Lists -->
+      <div class="section-block">
+        <h3>Lists</h3>
+        <ul id="ul-list">
+          <li>Unordered item 1</li>
+          <li>Unordered item 2
+            <ul>
+              <li>Nested item A</li>
+              <li>Nested item B</li>
+            </ul>
+          </li>
+          <li>Unordered item 3</li>
+        </ul>
+        <ol id="ol-list">
+          <li>Ordered item 1</li>
+          <li>Ordered item 2</li>
+          <li>Ordered item 3</li>
+        </ol>
+        <dl id="dl-list">
+          <dt>Term 1</dt>
+          <dd>Definition 1</dd>
+          <dt>Term 2</dt>
+          <dd>Definition 2</dd>
+        </dl>
+      </div>
+
+      <!-- Buttons -->
+      <div class="section-block">
+        <h3>Button Types</h3>
+        <button id="btn-submit-type" type="submit">Submit Type</button>
+        <button id="btn-button-type" type="button">Button Type</button>
+        <button id="btn-reset-type" type="reset">Reset Type</button>
+        <input type="button" id="input-btn" value="Input Button" />
+        <input type="submit" id="input-submit" value="Input Submit" />
+        <input type="reset" id="input-reset" value="Input Reset" />
+      </div>
+
+      <!-- Images -->
+      <div class="section-block">
+        <h3>Images</h3>
+        <img id="img-1" src="https://picsum.photos/seed/vwo1/200/120" alt="Sample image 1" width="200" height="120" />
+        <img id="img-2" src="https://picsum.photos/seed/vwo2/200/120" alt="Sample image 2" width="200" height="120" />
+        <figure id="figure-1">
+          <img src="https://picsum.photos/seed/vwo3/200/120" alt="Figure image" width="200" height="120" />
+          <figcaption>Figure caption text</figcaption>
+        </figure>
+      </div>
+
+      <!-- Semantic elements -->
+      <div class="section-block">
+        <h3>Semantic Elements</h3>
+        <article id="article-1">
+          <header>
+            <h4>Article Header</h4>
+          </header>
+          <p>Article body content goes here.</p>
+          <footer>Article footer</footer>
+        </article>
+        <aside id="aside-1" style="border-left:3px solid #ccc;padding-left:1rem;">
+          <p>This is an aside element.</p>
+        </aside>
+        <details id="details-1">
+          <summary>Click to expand details</summary>
+          <p>Hidden content revealed on expand.</p>
+        </details>
+        <progress id="progress-1" value="65" max="100">65%</progress>
+        <meter id="meter-1" min="0" max="100" low="30" high="70" optimum="80" value="75">75</meter>
+      </div>
+
+      <!-- Misc -->
+      <div class="section-block">
+        <h3>Miscellaneous</h3>
+        <hr id="hr-1" />
+        <p>Content after horizontal rule.</p>
+        <div id="div-1" class="highlight-box" tabindex="0">Focusable div (tabindex=0)</div>
+        <span id="span-1" style="background:#ffe;padding:4px;">Inline span element</span>
+        <br />
+        <kbd>Ctrl</kbd> + <kbd>C</kbd> — keyboard element
+      </div>
+    </section>
+
+    <!-- FORMS PAGE -->
+    <section id="page-forms" class="page">
+      <h2>Standard Forms</h2>
+
+      <form id="standard-form" novalidate>
+        <fieldset>
+          <legend>Personal Information</legend>
+
+          <div class="form-group">
+            <label for="txt-name">Full Name *</label>
+            <input type="text" id="txt-name" name="fullName" placeholder="John Doe" required autocomplete="name" />
+            <span class="error-msg" id="err-name"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="txt-email">Email *</label>
+            <input type="email" id="txt-email" name="email" placeholder="john@example.com" required
+              autocomplete="email" />
+            <span class="error-msg" id="err-email"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="txt-phone">Phone</label>
+            <input type="tel" id="txt-phone" name="phone" placeholder="+91 9999999999" autocomplete="tel" />
+          </div>
+
+          <div class="form-group">
+            <label for="txt-dob">Date of Birth</label>
+            <input type="date" id="txt-dob" name="dob" />
+          </div>
+
+          <div class="form-group">
+            <label for="txt-age">Age</label>
+            <input type="number" id="txt-age" name="age" min="1" max="120" step="1" placeholder="25" />
+          </div>
+
+          <div class="form-group">
+            <label for="txt-url">Website URL</label>
+            <input type="url" id="txt-url" name="website" placeholder="https://example.com" />
+          </div>
+
+          <div class="form-group">
+            <label for="txt-password">Password</label>
+            <input type="password" id="txt-password" name="password" placeholder="Min 8 chars" minlength="8"
+              autocomplete="new-password" />
+          </div>
+
+          <div class="form-group">
+            <label for="txt-search">Search</label>
+            <input type="search" id="txt-search" name="search" placeholder="Search..." />
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Preferences</legend>
+
+          <div class="form-group">
+            <label for="sel-country">Country</label>
+            <select id="sel-country" name="country">
+              <option value="">-- Select Country --</option>
+              <option value="in">India</option>
+              <option value="us">United States</option>
+              <option value="uk">United Kingdom</option>
+              <option value="au">Australia</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="sel-multi">Multi-Select Skills</label>
+            <select id="sel-multi" name="skills" multiple size="4">
+              <option value="js">JavaScript</option>
+              <option value="py">Python</option>
+              <option value="java">Java</option>
+              <option value="qa">QA Testing</option>
+              <option value="auto">Automation</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Gender</label>
+            <label><input type="radio" id="radio-male" name="gender" value="male" /> Male</label>
+            <label><input type="radio" id="radio-female" name="gender" value="female" /> Female</label>
+            <label><input type="radio" id="radio-other" name="gender" value="other" /> Other</label>
+          </div>
+
+          <div class="form-group">
+            <label>Interests</label>
+            <label><input type="checkbox" id="chk-ab" name="interests" value="ab" /> A/B Testing</label>
+            <label><input type="checkbox" id="chk-heatmap" name="interests" value="heatmap" /> Heatmaps</label>
+            <label><input type="checkbox" id="chk-session" name="interests" value="session" /> Session Recording</label>
+            <label><input type="checkbox" id="chk-funnel" name="interests" value="funnel" /> Funnels</label>
+          </div>
+
+          <div class="form-group">
+            <label for="txt-color">Favorite Color</label>
+            <input type="color" id="txt-color" name="color" value="#4a90e2" />
+          </div>
+
+          <div class="form-group">
+            <label for="range-satisfaction">Satisfaction (1-10): <span id="range-val">5</span></label>
+            <input type="range" id="range-satisfaction" name="satisfaction" min="1" max="10" value="5"
+              oninput="document.getElementById('range-val').textContent=this.value" />
+          </div>
+
+          <div class="form-group">
+            <label for="txt-datetime">Appointment DateTime</label>
+            <input type="datetime-local" id="txt-datetime" name="appointment" />
+          </div>
+
+          <div class="form-group">
+            <label for="txt-month">Month</label>
+            <input type="month" id="txt-month" name="month" />
+          </div>
+
+          <div class="form-group">
+            <label for="txt-week">Week</label>
+            <input type="week" id="txt-week" name="week" />
+          </div>
+
+          <div class="form-group">
+            <label for="txt-time">Time</label>
+            <input type="time" id="txt-time" name="time" />
+          </div>
+
+          <div class="form-group">
+            <label for="txt-file">Upload File</label>
+            <input type="file" id="txt-file" name="file" accept=".pdf,.jpg,.png" multiple />
+          </div>
+
+          <div class="form-group">
+            <label for="txt-textarea">Comments</label>
+            <textarea id="txt-textarea" name="comments" rows="4" cols="50" placeholder="Enter your comments here..."
+              maxlength="500"></textarea>
+            <small id="char-count">0 / 500</small>
+          </div>
+
+          <div class="form-group">
+            <label for="txt-hidden">Hidden Field (value: vwo-test)</label>
+            <input type="hidden" id="txt-hidden" name="hiddenField" value="vwo-test" />
+            <small>Hidden input present in DOM (not visible)</small>
+          </div>
+        </fieldset>
+
+        <div class="form-actions">
+          <button type="submit" id="btn-form-submit" class="btn btn-primary">Submit Form</button>
+          <button type="reset" id="btn-form-reset" class="btn btn-outline">Reset</button>
+        </div>
+
+        <div id="form-result" class="result-box hidden"></div>
+      </form>
+
+      <!-- Datalist -->
+      <div class="section-block">
+        <h3>Datalist (Autocomplete)</h3>
+        <input type="text" id="txt-datalist" list="browsers-list" placeholder="Type a browser name..." />
+        <datalist id="browsers-list">
+          <option value="Chrome">
+          <option value="Firefox">
+          <option value="Safari">
+          <option value="Edge">
+          <option value="Opera">
+        </datalist>
+      </div>
+
+      <!-- Output element -->
+      <div class="section-block">
+        <h3>Output Element</h3>
+        <form id="calc-form" oninput="calcResult.value = parseInt(calcA.value||0) + parseInt(calcB.value||0)">
+          <input type="number" id="calcA" name="calcA" value="10" style="width:80px" /> +
+          <input type="number" id="calcB" name="calcB" value="20" style="width:80px" /> =
+          <output id="calcResult" name="calcResult" for="calcA calcB">30</output>
+        </form>
+      </div>
+    </section>
+
+    <!-- DYNAMIC FORMS PAGE -->
+    <section id="page-dynamic" class="page">
+      <h2>Dynamic Forms</h2>
+
+      <!-- Conditional fields -->
+      <div class="section-block">
+        <h3>Conditional Form Fields</h3>
+        <form id="dynamic-form">
+          <div class="form-group">
+            <label for="dyn-type">Account Type</label>
+            <select id="dyn-type" name="accountType" onchange="handleAccountType(this.value)">
+              <option value="">-- Select --</option>
+              <option value="individual">Individual</option>
+              <option value="business">Business</option>
+              <option value="enterprise">Enterprise</option>
+            </select>
+          </div>
+
+          <div id="individual-fields" class="dyn-section hidden">
+            <div class="form-group">
+              <label for="dyn-ind-name">Individual Name</label>
+              <input type="text" id="dyn-ind-name" name="indName" placeholder="Your name" />
+            </div>
+            <div class="form-group">
+              <label for="dyn-ind-pan">PAN Number</label>
+              <input type="text" id="dyn-ind-pan" name="pan" placeholder="ABCDE1234F" maxlength="10" />
+            </div>
+          </div>
+
+          <div id="business-fields" class="dyn-section hidden">
+            <div class="form-group">
+              <label for="dyn-biz-name">Company Name</label>
+              <input type="text" id="dyn-biz-name" name="companyName" placeholder="Acme Corp" />
+            </div>
+            <div class="form-group">
+              <label for="dyn-biz-gst">GST Number</label>
+              <input type="text" id="dyn-biz-gst" name="gst" placeholder="22AAAAA0000A1Z5" />
+            </div>
+            <div class="form-group">
+              <label for="dyn-biz-emp">Number of Employees</label>
+              <select id="dyn-biz-emp" name="employees">
+                <option value="1-10">1-10</option>
+                <option value="11-50">11-50</option>
+                <option value="51-200">51-200</option>
+                <option value="200+">200+</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="enterprise-fields" class="dyn-section hidden">
+            <div class="form-group">
+              <label for="dyn-ent-name">Enterprise Name</label>
+              <input type="text" id="dyn-ent-name" name="entName" />
+            </div>
+            <div class="form-group">
+              <label for="dyn-ent-contact">Dedicated Contact</label>
+              <input type="email" id="dyn-ent-contact" name="entContact" />
+            </div>
+            <div class="form-group">
+              <label for="dyn-ent-sla">SLA Tier</label>
+              <select id="dyn-ent-sla" name="sla">
+                <option value="gold">Gold</option>
+                <option value="platinum">Platinum</option>
+                <option value="diamond">Diamond</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-dyn-submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+
+      <!-- Dynamically added fields -->
+      <div class="section-block">
+        <h3>Add/Remove Fields Dynamically</h3>
+        <div id="dynamic-fields-container">
+          <div class="dynamic-field-row" id="field-row-1">
+            <input type="text" name="dynField[]" placeholder="Field 1" class="dyn-input" />
+            <button type="button" class="btn btn-danger btn-sm" onclick="removeDynField(this)">✕</button>
+          </div>
+        </div>
+        <button type="button" id="btn-add-field" class="btn btn-outline" onclick="addDynField()">+ Add Field</button>
+      </div>
+
+      <!-- AJAX / Fetch simulated -->
+      <div class="section-block">
+        <h3>AJAX-Loaded Content</h3>
+        <button id="btn-load-content" class="btn btn-primary" onclick="loadAjaxContent()">Load Content via
+          Fetch</button>
+        <div id="ajax-result" class="result-box" style="min-height:60px;margin-top:1rem;">Click button to load...</div>
+      </div>
+
+      <!-- Multi-step form -->
+      <div class="section-block">
+        <h3>Multi-Step Form</h3>
+        <div id="step-indicator">
+          <span class="step-dot active" id="dot-1">1</span>
+          <span class="step-dot" id="dot-2">2</span>
+          <span class="step-dot" id="dot-3">3</span>
+        </div>
+        <form id="multistep-form">
+          <div id="step-1" class="step-panel active">
+            <h4>Step 1: Basic Info</h4>
+            <div class="form-group">
+              <label for="ms-name">Name</label>
+              <input type="text" id="ms-name" name="msName" required />
+            </div>
+            <div class="form-group">
+              <label for="ms-email">Email</label>
+              <input type="email" id="ms-email" name="msEmail" required />
+            </div>
+            <button type="button" class="btn btn-primary" onclick="nextStep(1)">Next →</button>
+          </div>
+          <div id="step-2" class="step-panel">
+            <h4>Step 2: Details</h4>
+            <div class="form-group">
+              <label for="ms-company">Company</label>
+              <input type="text" id="ms-company" name="msCompany" />
+            </div>
+            <div class="form-group">
+              <label for="ms-role">Role</label>
+              <select id="ms-role" name="msRole">
+                <option value="qa">QA Engineer</option>
+                <option value="dev">Developer</option>
+                <option value="pm">Product Manager</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-outline" onclick="prevStep(2)">← Back</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next →</button>
+          </div>
+          <div id="step-3" class="step-panel">
+            <h4>Step 3: Confirm</h4>
+            <div id="ms-summary"></div>
+            <button type="button" class="btn btn-outline" onclick="prevStep(3)">← Back</button>
+            <button type="submit" id="btn-ms-submit" class="btn btn-primary">Submit ✓</button>
+          </div>
+        </form>
+        <div id="ms-result" class="result-box hidden"></div>
+      </div>
+      <!-- Dynamic ID Tracking -->
+      <div class="section-block">
+        <h3>Dynamic ID Tracking</h3>
+        <p style="font-size:14px;margin-bottom:10px">
+          Tests VWO's ability to track elements whose <code>id</code> changes on every page load
+          or after user interaction.
+        </p>
+
+        <!-- Random ID on page load -->
+        <h4>1. Random ID on Page Load</h4>
+        <p style="font-size:13px;color:#64748b;margin-bottom:8px">
+          The input starts as <code>id="input-123"</code> in HTML but is randomised to
+          <code>input-{000–999}</code> on page load. Reload to see a new ID.
+        </p>
+        <div class="form-group" style="max-width:360px">
+          <label for="input-123">Random-ID Input</label>
+          <input type="text" id="input-123" name="random_id_field" placeholder="My id changes on every load"
+            data-testid="random-id-input" />
+          <small id="random-id-display">Current ID: input-123 (loading…)</small>
+        </div>
+
+        <!-- changeFieldId -->
+        <h4 style="margin-top:16px">2. Dynamic ID on Field Change (<code>changeFieldId</code>)</h4>
+        <p style="font-size:13px;color:#64748b;margin-bottom:8px">
+          Type in either field and tab out — the <code>id</code> mutates; the stable
+          <code>name</code> attribute lets VWO still track it.
+        </p>
+        <form id="dynamic-id-form" style="max-width:420px">
+          <div class="form-group">
+            <label for="dyn-name">Name (id changes on change)</label>
+            <input type="text" id="dyn-name" name="name_1" placeholder="Type then tab out"
+              onchange="changeFieldId(this)" />
+          </div>
+          <div class="form-group">
+            <label for="dyn-email">Email (id changes on change)</label>
+            <input type="email" id="dyn-email" name="email_1" placeholder="Type then tab out"
+              onchange="changeFieldId(this)" />
+          </div>
+          <small id="dynamic-id-display">Current ID: (interact with a field)</small>
+          <br /><br />
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- CUSTOM ELEMENTS PAGE -->
+    <section id="page-custom" class="page">
+      <h2>Custom Elements &amp; Web Components</h2>
+
+      <!-- Custom rating widget -->
+      <div class="section-block">
+        <h3>Custom Star Rating (Web Component)</h3>
+        <star-rating id="star-rating-1" max="5" value="3"></star-rating>
+        <p>Selected rating: <span id="star-rating-output">3</span></p>
+      </div>
+
+      <!-- Custom toggle switch -->
+      <div class="section-block">
+        <h3>Custom Toggle Switch (Web Component)</h3>
+        <toggle-switch id="toggle-1" label="Enable Notifications" checked></toggle-switch>
+        <toggle-switch id="toggle-2" label="Dark Mode"></toggle-switch>
+        <toggle-switch id="toggle-3" label="Auto-save" checked></toggle-switch>
+      </div>
+
+      <!-- Custom progress bar -->
+      <div class="section-block">
+        <h3>Custom Progress Bar (Web Component)</h3>
+        <custom-progress id="custom-progress-1" value="40" max="100" label="Upload Progress"></custom-progress>
+        <br />
+        <button class="btn btn-primary" onclick="incrementProgress()">Increment Progress</button>
+      </div>
+
+      <!-- Custom accordion -->
+      <div class="section-block">
+        <h3>Custom Accordion (Web Component)</h3>
+        <custom-accordion id="accordion-1">
+          <accordion-item title="What is VWO?">
+            VWO is a leading A/B testing and conversion optimization platform.
+          </accordion-item>
+          <accordion-item title="What is Shadow DOM?">
+            Shadow DOM is a web standard that encapsulates DOM and CSS in a component.
+          </accordion-item>
+          <accordion-item title="What are Web Components?">
+            Web Components are a set of web platform APIs for creating reusable custom elements.
+          </accordion-item>
+        </custom-accordion>
+      </div>
+
+      <!-- Custom form with non-standard elements -->
+      <div class="section-block">
+        <h3>Form with Custom / Non-Standard Elements</h3>
+        <form id="custom-form" onsubmit="submitCustomForm(event)">
+          <div class="form-group">
+            <label>Name (standard input)</label>
+            <input type="text" id="cf-name" name="cfName" placeholder="Your name" />
+          </div>
+
+          <div class="form-group">
+            <label>Rating (custom element)</label>
+            <star-rating id="cf-rating" max="5" value="0" name="cfRating"></star-rating>
+          </div>
+
+          <div class="form-group">
+            <label>Notifications (custom toggle)</label>
+            <toggle-switch id="cf-toggle" name="cfNotify" label="Receive updates"></toggle-switch>
+          </div>
+
+          <div class="form-group">
+            <label>Priority (custom slider)</label>
+            <div id="custom-slider-wrap">
+              <div id="custom-slider-track">
+                <div id="custom-slider-thumb" draggable="true"></div>
+              </div>
+              <span id="custom-slider-value">50</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Tags (custom tag input)</label>
+            <div id="tag-input-wrap" class="tag-input-container">
+              <div id="tags-display"></div>
+              <input type="text" id="tag-input" placeholder="Type and press Enter" />
+              <input type="hidden" id="tags-hidden" name="cfTags" value="" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Color Picker (custom)</label>
+            <div id="custom-color-picker">
+              <div class="color-swatch" data-color="#e74c3c" style="background:#e74c3c" onclick="selectColor(this)">
+              </div>
+              <div class="color-swatch" data-color="#2ecc71" style="background:#2ecc71" onclick="selectColor(this)">
+              </div>
+              <div class="color-swatch" data-color="#3498db" style="background:#3498db" onclick="selectColor(this)">
+              </div>
+              <div class="color-swatch" data-color="#9b59b6" style="background:#9b59b6" onclick="selectColor(this)">
+              </div>
+              <div class="color-swatch" data-color="#f39c12" style="background:#f39c12" onclick="selectColor(this)">
+              </div>
+              <input type="hidden" id="selected-color" name="cfColor" value="" />
+            </div>
+            <span id="selected-color-label">None selected</span>
+          </div>
+
+          <button type="submit" id="btn-custom-submit" class="btn btn-primary">Submit Custom Form</button>
+          <div id="custom-form-result" class="result-box hidden"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- SHADOW DOM PAGE -->
+    <section id="page-shadow" class="page">
+      <h2>Shadow DOM</h2>
+
+      <div class="section-block">
+        <h3>Open Shadow Root</h3>
+        <p>The element below has an <strong>open</strong> shadow root. Its internals are accessible via
+          <code>element.shadowRoot</code>.
+        </p>
+        <div id="open-shadow-host" class="shadow-host"></div>
+      </div>
+
+      <div class="section-block">
+        <h3>Closed Shadow Root</h3>
+        <p>The element below has a <strong>closed</strong> shadow root. Its internals are NOT accessible via
+          <code>element.shadowRoot</code>.
+        </p>
+        <div id="closed-shadow-host" class="shadow-host"></div>
+      </div>
+
+      <div class="section-block">
+        <h3>Shadow DOM with Form</h3>
+        <p>A complete form rendered inside a shadow root.</p>
+        <div id="shadow-form-host" class="shadow-host"></div>
+      </div>
+
+      <div class="section-block">
+        <h3>Nested Shadow DOM</h3>
+        <p>Shadow DOM nested inside another shadow DOM.</p>
+        <div id="nested-shadow-host" class="shadow-host"></div>
+      </div>
+
+      <div class="section-block">
+        <h3>Shadow DOM with Slots</h3>
+        <slotted-card id="slotted-card-1">
+          <span slot="title">Slotted Card Title</span>
+          <p slot="content">This content is slotted into the shadow DOM component.</p>
+          <button slot="action" class="btn btn-primary">Slotted Action</button>
+        </slotted-card>
+      </div>
+    </section>
+
+    <!-- CANVAS PAGE -->
+    <section id="page-canvas" class="page">
+      <h2>Canvas Elements</h2>
+
+      <div class="section-block">
+        <h3>2D Drawing Canvas</h3>
+        <p>Click and drag to draw. Use the controls below.</p>
+        <div id="canvas-controls">
+          <label>Color: <input type="color" id="canvas-color" value="#e74c3c" /></label>
+          <label>Size: <input type="range" id="canvas-size" min="1" max="30" value="5" /></label>
+          <button id="btn-canvas-clear" class="btn btn-outline" onclick="clearCanvas()">Clear</button>
+          <button id="btn-canvas-save" class="btn btn-primary" onclick="saveCanvas()">Save as PNG</button>
+          <select id="canvas-tool">
+            <option value="pen">Pen</option>
+            <option value="rect">Rectangle</option>
+            <option value="circle">Circle</option>
+            <option value="line">Line</option>
+            <option value="eraser">Eraser</option>
+          </select>
+        </div>
+        <canvas id="draw-canvas" width="700" height="400"></canvas>
+      </div>
+
+      <div class="section-block">
+        <h3>Animated Canvas (Bar Chart)</h3>
+        <canvas id="chart-canvas" width="700" height="300"></canvas>
+        <button id="btn-animate-chart" class="btn btn-primary" onclick="animateChart()">Animate Chart</button>
+      </div>
+
+      <div class="section-block">
+        <h3>Canvas Click Tracking</h3>
+        <p>Click anywhere on the canvas. Clicks are tracked and shown below.</p>
+        <canvas id="click-canvas" width="700" height="200" style="cursor:crosshair;"></canvas>
+        <div id="click-log"></div>
+      </div>
+
+      <div class="section-block">
+        <h3>Canvas Particle Animation</h3>
+        <canvas id="particle-canvas" width="700" height="250"></canvas>
+        <button id="btn-start-particles" class="btn btn-primary" onclick="startParticles()">Start</button>
+        <button id="btn-stop-particles" class="btn btn-outline" onclick="stopParticles()">Stop</button>
+      </div>
+    </section>
+
+    <!-- TABLES PAGE -->
+    <section id="page-tables" class="page">
+      <h2>Tables &amp; Data Grids</h2>
+
+      <div class="section-block">
+        <h3>Sortable Table</h3>
+        <div class="table-controls">
+          <input type="search" id="table-search" placeholder="Search table..." oninput="filterTable(this.value)" />
+          <select id="table-page-size" onchange="changePageSize(this.value)">
+            <option value="5">5 per page</option>
+            <option value="10" selected>10 per page</option>
+            <option value="20">20 per page</option>
+          </select>
+        </div>
+        <table id="data-table" class="data-table">
+          <thead>
+            <tr>
+              <th data-col="id" onclick="sortTable('id')" class="sortable">ID ↕</th>
+              <th data-col="name" onclick="sortTable('name')" class="sortable">Name ↕</th>
+              <th data-col="email" onclick="sortTable('email')" class="sortable">Email ↕</th>
+              <th data-col="role" onclick="sortTable('role')" class="sortable">Role ↕</th>
+              <th data-col="status" onclick="sortTable('status')" class="sortable">Status ↕</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+        <div id="table-pagination" class="pagination"></div>
+      </div>
+
+      <div class="section-block">
+        <h3>Complex Table (colspan / rowspan)</h3>
+        <table class="data-table" id="complex-table">
+          <thead>
+            <tr>
+              <th rowspan="2">Name</th>
+              <th colspan="2">Q1</th>
+              <th colspan="2">Q2</th>
+            </tr>
+            <tr>
+              <th>Revenue</th>
+              <th>Conversions</th>
+              <th>Revenue</th>
+              <th>Conversions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Campaign A</td>
+              <td>$12,000</td>
+              <td>240</td>
+              <td>$15,000</td>
+              <td>310</td>
+            </tr>
+            <tr>
+              <td>Campaign B</td>
+              <td>$8,500</td>
+              <td>170</td>
+              <td>$9,200</td>
+              <td>195</td>
+            </tr>
+            <tr>
+              <td>Campaign C</td>
+              <td>$21,000</td>
+              <td>420</td>
+              <td>$19,800</td>
+              <td>400</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td>$41,500</td>
+              <td>830</td>
+              <td>$44,000</td>
+              <td>905</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <!-- MEDIA PAGE -->
+    <section id="page-media" class="page">
+      <h2>Media Elements</h2>
+
+      <div class="section-block">
+        <h3>Video Element</h3>
+        <video id="video-1" width="560" height="315" controls preload="metadata"
+          poster="https://picsum.photos/seed/vwovid/560/315">
+          <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div class="section-block">
+        <h3>Audio Element</h3>
+        <audio id="audio-1" controls preload="none">
+          <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
+          <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg" />
+          Your browser does not support audio.
+        </audio>
+      </div>
+
+      <div class="section-block">
+        <h3>SVG Element</h3>
+        <svg id="svg-1" width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <rect id="svg-rect" x="10" y="10" width="100" height="80" fill="#3498db" rx="8"
+            onclick="alert('SVG rect clicked!')" style="cursor:pointer" />
+          <circle id="svg-circle" cx="200" cy="60" r="50" fill="#e74c3c" onclick="alert('SVG circle clicked!')"
+            style="cursor:pointer" />
+          <text id="svg-text" x="10" y="150" font-size="18" fill="#2c3e50">SVG Text Element</text>
+          <line id="svg-line" x1="10" y1="170" x2="290" y2="170" stroke="#95a5a6" stroke-width="2" />
+          <polygon id="svg-polygon" points="150,10 180,80 120,80" fill="#2ecc71" transform="translate(0,100)" />
+        </svg>
+        <p><small>Click on shapes to interact</small></p>
+      </div>
+
+      <div class="section-block">
+        <h3>Iframe</h3>
+        <iframe id="iframe-1" src="https://example.com" width="100%" height="300" title="Example iframe"
+          sandbox="allow-scripts allow-same-origin" style="border:1px solid #ccc;border-radius:4px;"></iframe>
+      </div>
+
+      <div class="section-block">
+        <h3>Picture / Responsive Images</h3>
+        <picture id="picture-1">
+          <source media="(min-width:800px)" srcset="https://picsum.photos/seed/vwolg/800/200" />
+          <source media="(min-width:400px)" srcset="https://picsum.photos/seed/vwomd/400/200" />
+          <img src="https://picsum.photos/seed/vwosm/300/200" alt="Responsive picture" style="max-width:100%" />
+        </picture>
+      </div>
+    </section>
+
+    <!-- INTERACTIONS PAGE -->
+    <section id="page-interactions" class="page">
+      <h2>Interactions &amp; UI Patterns</h2>
+
+      <!-- Modal -->
+      <div class="section-block">
+        <h3>Modal Dialog</h3>
+        <button id="btn-open-modal" class="btn btn-primary" onclick="openModal()">Open Modal</button>
+        <div id="modal-overlay" class="modal-overlay hidden" onclick="closeModal()">
+          <div class="modal" onclick="event.stopPropagation()" role="dialog" aria-modal="true"
+            aria-labelledby="modal-title">
+            <h3 id="modal-title">Modal Title</h3>
+            <p>This is a modal dialog. It can contain any content including forms.</p>
+            <form id="modal-form" onsubmit="submitModalForm(event)">
+              <div class="form-group">
+                <label for="modal-input">Enter something</label>
+                <input type="text" id="modal-input" placeholder="Type here..." />
+              </div>
+              <button type="submit" id="btn-modal-submit" class="btn btn-primary">Submit</button>
+              <button type="button" id="btn-modal-close" class="btn btn-outline" onclick="closeModal()">Close</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="section-block">
+        <h3>Tabs</h3>
+        <div class="tabs" role="tablist">
+          <button class="tab-btn active" id="tab-btn-1" role="tab" aria-selected="true" onclick="switchTab(1)">Tab
+            1</button>
+          <button class="tab-btn" id="tab-btn-2" role="tab" aria-selected="false" onclick="switchTab(2)">Tab 2</button>
+          <button class="tab-btn" id="tab-btn-3" role="tab" aria-selected="false" onclick="switchTab(3)">Tab 3</button>
+        </div>
+        <div id="tab-panel-1" class="tab-panel active" role="tabpanel">Content for Tab 1 — A/B Testing overview.</div>
+        <div id="tab-panel-2" class="tab-panel" role="tabpanel">Content for Tab 2 — Heatmap analysis.</div>
+        <div id="tab-panel-3" class="tab-panel" role="tabpanel">Content for Tab 3 — Session recordings.</div>
+      </div>
+
+      <!-- Accordion -->
+      <div class="section-block">
+        <h3>Native Accordion (details/summary)</h3>
+        <details id="acc-1">
+          <summary>Accordion Item 1</summary>
+          <p>Content for item 1.</p>
+        </details>
+        <details id="acc-2">
+          <summary>Accordion Item 2</summary>
+          <p>Content for item 2.</p>
+        </details>
+        <details id="acc-3">
+          <summary>Accordion Item 3</summary>
+          <p>Content for item 3.</p>
+        </details>
+      </div>
+
+      <!-- Tooltip -->
+      <div class="section-block">
+        <h3>Tooltips</h3>
+        <span class="tooltip-wrap" id="tooltip-1">
+          Hover over me
+          <span class="tooltip-text">This is a tooltip!</span>
+        </span>
+        &nbsp;&nbsp;
+        <button class="btn btn-outline tooltip-wrap" id="tooltip-btn">
+          Button with tooltip
+          <span class="tooltip-text">Click to perform action</span>
+        </button>
+      </div>
+
+      <!-- Drag and Drop -->
+      <div class="section-block">
+        <h3>Drag &amp; Drop</h3>
+        <div id="drag-container">
+          <div id="drag-source" class="drag-zone">
+            <h4>Source</h4>
+            <div class="drag-item" draggable="true" id="drag-1" ondragstart="dragStart(event)">Item A</div>
+            <div class="drag-item" draggable="true" id="drag-2" ondragstart="dragStart(event)">Item B</div>
+            <div class="drag-item" draggable="true" id="drag-3" ondragstart="dragStart(event)">Item C</div>
+          </div>
+          <div id="drag-target" class="drag-zone drop-zone" ondragover="dragOver(event)" ondrop="drop(event)"
+            ondragleave="dragLeave(event)">
+            <h4>Drop Here</h4>
+            <p id="drop-placeholder">Drop items here</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Infinite Scroll -->
+      <div class="section-block">
+        <h3>Infinite Scroll List</h3>
+        <div id="infinite-list"
+          style="height:300px;overflow-y:auto;border:1px solid #ccc;padding:1rem;border-radius:4px;">
+          <ul id="infinite-items"></ul>
+          <div id="infinite-loader" style="text-align:center;padding:1rem;">Loading...</div>
+        </div>
+      </div>
+
+      <!-- Notification / Alert types -->
+      <div class="section-block">
+        <h3>Notification Banners</h3>
+        <div id="alert-success" class="alert alert-success" role="alert">✓ Success! Your action was completed.</div>
+        <div id="alert-warning" class="alert alert-warning" role="alert">⚠ Warning! Please review your input.</div>
+        <div id="alert-error" class="alert alert-error" role="alert">✕ Error! Something went wrong.</div>
+        <div id="alert-info" class="alert alert-info" role="alert">ℹ Info: Here is some useful information.</div>
+      </div>
+
+      <!-- Lazy loaded content -->
+      <div class="section-block">
+        <h3>Lazy Loaded Images</h3>
+        <div id="lazy-grid" class="lazy-grid">
+          <img loading="lazy" src="https://picsum.photos/seed/lazy1/200/150" alt="Lazy 1" />
+          <img loading="lazy" src="https://picsum.photos/seed/lazy2/200/150" alt="Lazy 2" />
+          <img loading="lazy" src="https://picsum.photos/seed/lazy3/200/150" alt="Lazy 3" />
+          <img loading="lazy" src="https://picsum.photos/seed/lazy4/200/150" alt="Lazy 4" />
+          <img loading="lazy" src="https://picsum.photos/seed/lazy5/200/150" alt="Lazy 5" />
+          <img loading="lazy" src="https://picsum.photos/seed/lazy6/200/150" alt="Lazy 6" />
+        </div>
+      </div>
+
+      <!-- Clipboard / Copy -->
+      <div class="section-block">
+        <h3>Clipboard API</h3>
+        <input type="text" id="copy-input" value="Copy this text to clipboard" style="width:300px" readonly />
+        <button id="btn-copy" class="btn btn-primary" onclick="copyToClipboard()">Copy</button>
+        <span id="copy-status"></span>
+      </div>
+
+      <!-- Geolocation -->
+      <div class="section-block">
+        <h3>Geolocation API</h3>
+        <button id="btn-geo" class="btn btn-primary" onclick="getLocation()">Get My Location</button>
+        <div id="geo-result" class="result-box" style="margin-top:0.5rem;"></div>
+      </div>
+
+      <!-- Local Storage -->
+      <div class="section-block">
+        <h3>Local / Session Storage</h3>
+        <input type="text" id="storage-key" placeholder="Key" style="width:150px" />
+        <input type="text" id="storage-value" placeholder="Value" style="width:150px" />
+        <button class="btn btn-primary" onclick="setStorage()">Set</button>
+        <button class="btn btn-outline" onclick="getStorage()">Get</button>
+        <button class="btn btn-danger" onclick="clearStorage()">Clear All</button>
+        <div id="storage-result" class="result-box" style="margin-top:0.5rem;"></div>
+      </div>
+
+      <!-- Countdown timer -->
+      <div class="section-block">
+        <h3>Countdown Timer</h3>
+        <div id="countdown-display" style="font-size:2rem;font-weight:bold;">00:30</div>
+        <button id="btn-start-timer" class="btn btn-primary" onclick="startTimer()">Start</button>
+        <button id="btn-pause-timer" class="btn btn-outline" onclick="pauseTimer()">Pause</button>
+        <button id="btn-reset-timer" class="btn btn-danger" onclick="resetTimer()">Reset</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="main-footer">
+    <p>VWO QA TestBed SPA &copy; 2024 | Built for testing purposes</p>
+    <p id="footer-info">Page: <span id="current-page-name">home</span> | Viewport: <span id="viewport-size"></span></p>
+  </footer>
+
+  <script src="components.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // ── Random ID on page load ──────────────────────────────────────
+    window.addEventListener('load', function () {
+      var n = Math.floor(Math.random() * 1000);
+      var formatted = String(n).padStart(3, '0');
+      var el = document.getElementById('input-123');
+      if (el) {
+        el.id = 'input-' + formatted;
+        var display = document.getElementById('random-id-display');
+        if (display) display.textContent = 'Current ID: input-' + formatted;
+        console.log('[SPA Random ID] input-123 → input-' + formatted);
+      }
+    });
+  </script>
+</body>
+
+</html>
