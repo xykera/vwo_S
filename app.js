@@ -677,20 +677,36 @@ function startTimer() {
 }
 function pauseTimer() { clearInterval(timerInterval); timerInterval = null; }
 function resetTimer() { pauseTimer(); timerSeconds = 30; updateTimerDisplay(); }
-btn.addEventListener("click", function () {
+/* ── VWO ERROR CLICK TEST (FINAL) ───────────────────────── */
+document.addEventListener("DOMContentLoaded", function () {
+  const btn = document.getElementById("vwo-error-test");
 
-  // ✅ UI feedback → avoids dead click
-  btn.innerText = "Submitting...";
+  if (!btn) return;
 
-  // ✅ Force controlled failure AFTER click
-  setTimeout(() => {
-    fetch("/fake-api-endpoint")
-      .then(() => {
-        // should never happen
-      })
-      .catch(() => {
-        throw new Error("VWO Simulated Error Click");
-      });
-  }, 100); // 👈 critical delay
+  btn.addEventListener("click", function () {
 
+    // ✅ Step 1: STRONG UI feedback (prevents dead click)
+    btn.innerText = "Submitting...";
+    btn.disabled = true;
+    btn.style.opacity = "0.6";
+    btn.style.cursor = "not-allowed";
+
+    // ✅ Step 2: Delay ensures VWO captures click properly
+    setTimeout(() => {
+
+      // ✅ Step 3: Simulate real-world failure (BEST METHOD)
+      fetch("/fake-api-endpoint")
+        .then(() => {
+          // Should never succeed
+        })
+        .catch(() => {
+
+          // ✅ Step 4: Throw actual error → VWO detects Error Click
+          throw new Error("VWO Simulated Error Click");
+
+        });
+
+    }, 120); // 🔥 critical delay
+
+  });
 });
