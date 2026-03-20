@@ -677,3 +677,13 @@ function startTimer() {
 }
 function pauseTimer() { clearInterval(timerInterval); timerInterval = null; }
 function resetTimer() { pauseTimer(); timerSeconds = 30; updateTimerDisplay(); }
+document.addEventListener("DOMContentLoaded", function () {
+  const btn = document.getElementById("vwo-error-test");
+
+  if (btn) {
+    btn.addEventListener("click", function () {
+      // Force real runtime error
+      throw new Error("VWO Test Error Click");
+    });
+  }
+});
