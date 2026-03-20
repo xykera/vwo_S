@@ -677,13 +677,20 @@ function startTimer() {
 }
 function pauseTimer() { clearInterval(timerInterval); timerInterval = null; }
 function resetTimer() { pauseTimer(); timerSeconds = 30; updateTimerDisplay(); }
-document.addEventListener("DOMContentLoaded", function () {
-  const btn = document.getElementById("vwo-error-test");
+btn.addEventListener("click", function () {
 
-  if (btn) {
-    btn.addEventListener("click", function () {
-      // Force real runtime error
-      throw new Error("VWO Test Error Click");
-    });
-  }
+  // ✅ UI feedback → avoids dead click
+  btn.innerText = "Submitting...";
+
+  // ✅ Force controlled failure AFTER click
+  setTimeout(() => {
+    fetch("/fake-api-endpoint")
+      .then(() => {
+        // should never happen
+      })
+      .catch(() => {
+        throw new Error("VWO Simulated Error Click");
+      });
+  }, 100); // 👈 critical delay
+
 });
